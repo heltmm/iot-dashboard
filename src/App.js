@@ -11,22 +11,23 @@ class App extends Component {
   }
 
   componentDidMount() {
-    window.fetch('https://weather-station-.herokuapp.com/').then(data => {
+    //https://weather-station-.herokuapp.com/
+    window.fetch('http://localhost:3001/').then(data => {
       data.json().then(res => {
         this.setState({readings: res})
       })
     })
-
-    const cable = ActionCable.createConsumer('ws://weather-station-.herokuapp.com//cable')
+    //ws://weather-station-.herokuapp.com/cable
+    const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
     this.sub = cable.subscriptions.create('ReadingsChannel', {
       received: this.handleReceiveNewReadings
     })
   }
 
-  handleReceiveNewReadings = ({ newReadings }) => {
-    console.log("made it")
-    if (newReadings !== this.state.readings) {
-      this.setState({ readings: newReadings })
+  handleReceiveNewReadings = ({ readings }) => {
+    console.log(readings)
+    if (readings !== this.state.readings) {
+      this.setState({ readings: readings })
       console.log(this.state.readings)
     }
   }
