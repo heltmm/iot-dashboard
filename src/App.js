@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import ActionCable from 'actioncable'
 import Reading from './components/reading'
+import LineExample from './components/line-graph';
 
 class App extends Component {
   constructor(props) {
@@ -46,6 +47,8 @@ class App extends Component {
               />
             ))
           }
+          <LineExample
+            readings={this.state.readings}/>
       </div>
     );
   }
