@@ -85,12 +85,11 @@ class App extends Component {
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
-              <Header as='h3'>Application Content</Header>
                 <h1>Devices:</h1>
                   {
                     this.state.devices.map((device) => (
                       <Device
-                        key={device.id}
+                        id={device.id}
                         name={device.name}
                         location={device.location}
                       />

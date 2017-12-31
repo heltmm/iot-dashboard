@@ -5,8 +5,8 @@ let data = {
   labels: [],
   datasets: [
     {
-      label: 'My First dataset',
-      fill: false,
+      label: 'Temperature',
+      fill: true,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
       borderColor: 'rgba(75,192,192,1)',
@@ -27,17 +27,16 @@ let data = {
     }
   ]
 };
-const LineExample = (props) => {
-  props.readings.map((reading) => (
-    data.datasets[0].data.push(reading.temperature),
-    data.labels.push(reading.created_at)
-  ))
+let LineGraph = (props) => {
+
+    data.datasets[0].data = props.readings.temperatures
+    data.labels = props.readings.labels
+    
   return (
     <div>
-      <h2>Line Example</h2>
-      <Line data={data} />
+      <Line data={data}/>
     </div>
   );
 };
 
-export default LineExample
+export default LineGraph

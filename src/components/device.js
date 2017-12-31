@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import ActionCable from 'actioncable'
 import Reading from './reading'
-import LineExample from './line-graph';
+import LineGraph from './line-graph';
 
 class Device extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { readings: [] }
+    this.state = { readings: [{temperature: '', humidity: '', created_at: ''}] }
   }
 
   componentDidMount() {
@@ -17,39 +17,48 @@ class Device extends Component {
         this.setState({readings: res})
       })
     })
+    console.log(this.state.readings[this.state.readings.length-1])
     //ws://weather-station-.herokuapp.com/cable
     const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
     this.sub = cable.subscriptions.create('ReadingsChannel', {
-      received: this.handleReceiveNewReadings
+      received: this.handleReceiveNewReading
     })
   }
 
-  handleReceiveNewReadings = ({ readings }) => {
-
-    if (readings !== this.state.readings) {
-      this.setState({ readings: readings })
+  handleReceiveNewReading = ({ reading }) => {
+    console.log(reading)
+    if (reading.device_id === this.props.id) {
+      this.setState({ readings: [...this.state.readings, reading] })
       console.log(this.state.readings)
     }
   }
 
 
+
+
+
+
+
   render() {
+    let tempData = {temperatures: [], labels: []}
+    this.state.readings.map((reading) => {
+      tempData.temperatures.push(reading.temperature)
+      tempData.labels.push(reading.created_at)
+    })
     return (
       <div>
         <h1>{this.props.name}</h1>
         <p>{this.props.location}</p>
-        <h2>Readings: {this.state.readings.length}</h2>
-          {
-            this.state.readings.map((reading) => (
-              <Reading
-                key={reading.id}
-                temperature={reading.temperature}
-                humidity={reading.humidity}
-              />
-            ))
-          }
-          <LineExample
-            readings={this.state.readings}/>
+        <h2>Current Reading:</h2>
+          <Reading
+            key={this.state.readings[this.state.readings.length-1].id}
+            temperature={this.state.readings[this.state.readings.length-1].temperature}
+            humidity={this.state.readings[this.state.readings.length-1].humidity}
+            time={this.state.readings[this.state.readings.length-1].created_at}
+          />
+        
+          <LineGraph
+            readings={tempData}/>
       </div>
     );
   }
