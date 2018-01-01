@@ -1,31 +1,22 @@
 import React, { Component } from 'react'
 import './App.css'
 import ActionCable from 'actioncable'
-import Device from './components/device'
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Input } from 'semantic-ui-react'
+import { Switch, Route } from 'react-router-dom'
+import Device from './components/device'
+import DeviceList from './components/device-list'
+
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      devices: [],
       visible: false,
       activeItem: 'home'}
-  }
+    }
 
   componentDidMount() {
-    //https://weather-station-.herokuapp.com/
-    window.fetch('http://localhost:3001/devices').then(data => {
-      data.json().then(res => {
-        this.setState({devices: res})
-      })
-    })
-    //ws://weather-station-.herokuapp.com/cable
-    // const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-    // this.sub = cable.subscriptions.create('ReadingsChannel', {
-    //   received: this.handleReceiveNewReadings
-    // })
     setInterval( () => {
       this.setState({
         curTime : new Date().toLocaleString()
@@ -36,14 +27,6 @@ class App extends Component {
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
-  // handleReceiveNewReadings = ({ readings }) => {
-  //
-  //   if (readings !== this.state.readings) {
-  //     this.setState({ readings: readings })
-  //     console.log(this.state.readings)
-  //   }
-  // }
 
 
   render() {
@@ -85,16 +68,11 @@ class App extends Component {
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
-                <h1>Devices:</h1>
-                  {
-                    this.state.devices.map((device) => (
-                      <Device
-                        id={device.id}
-                        name={device.name}
-                        location={device.location}
-                      />
-                    ))
-                  }
+              <Switch>
+                <Route exact path='/' component={DeviceList}/>
+                <Route path='/devices' component={DeviceList}/>
+                <Route exact path='/device/:id' component={Device}/>
+              </Switch>
             </Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>

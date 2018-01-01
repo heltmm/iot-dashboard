@@ -7,12 +7,14 @@ class Device extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { readings: [{temperature: '', humidity: '', created_at: ''}] }
+    this.state =  { readings: [{temperature: '', humidity: '', created_at: ''}],
+                    device_id: this.props.match.params.id
+                  }
   }
 
   componentDidMount() {
     //https://weather-station-.herokuapp.com/
-    window.fetch('http://localhost:3001/').then(data => {
+    window.fetch('http://localhost:3001/readings').then(data => {
       data.json().then(res => {
         this.setState({readings: res})
       })
@@ -27,16 +29,11 @@ class Device extends Component {
 
   handleReceiveNewReading = ({ reading }) => {
     console.log(reading)
-    if (reading.device_id === this.props.id) {
+    if (reading.device_id === this.state.device_id) {
       this.setState({ readings: [...this.state.readings, reading] })
       console.log(this.state.readings)
     }
   }
-
-
-
-
-
 
 
   render() {
@@ -47,8 +44,7 @@ class Device extends Component {
     })
     return (
       <div>
-        <h1>{this.props.name}</h1>
-        <p>{this.props.location}</p>
+
         <h2>Current Reading:</h2>
           <Reading
             key={this.state.readings[this.state.readings.length-1].id}
@@ -56,7 +52,7 @@ class Device extends Component {
             humidity={this.state.readings[this.state.readings.length-1].humidity}
             time={this.state.readings[this.state.readings.length-1].created_at}
           />
-        
+
           <LineGraph
             readings={tempData}/>
       </div>
