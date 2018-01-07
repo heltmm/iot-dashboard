@@ -21,7 +21,7 @@ class Device extends Component {
     })
     console.log(this.state.readings[this.state.readings.length-1])
     //ws://weather-station-.herokuapp.com/cable
-    const cable = ActionCable.createConsumer('wss://https://weather-station-.herokuapp.com/cable')
+    const cable = ActionCable.createConsumer('wss://weather-station-.herokuapp.com/cable')
     this.sub = cable.subscriptions.create({channel: 'ReadingsChannel', device_id: this.state.device_id}, {
       received: this.handleReceiveNewReading
     })
