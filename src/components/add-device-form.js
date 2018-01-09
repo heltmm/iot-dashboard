@@ -11,17 +11,19 @@ class AddDeviceForm extends Component {
 
   handleNewDeviceFormSubmission = (event) => {
     event.preventDefault();
-    const { _device_name, _location } = this.refs;
+    // window.fetch('http://localhost:3001/devices/',{
     window.fetch('https://weather-station-.herokuapp.com/devices/',{
       headers: {
         "Accept": 'application/json',
         "Content-Type": "application/json",
         "api_key": "F52NQQ0Ry1SMTguKQiQO4gtt"
+        // local api key
+        // "api_key": "LYT0mNYMIcNvQSC1qh9xGwtt"
       },
-      body: {
-        device_name: event.target.device_name.value,
+      body: JSON.stringify({
+        name: event.target.device_name.value,
         location: event.target.location.value
-      },
+      }),
       method: 'Post'
     })
   }

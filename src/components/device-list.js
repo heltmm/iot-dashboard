@@ -12,7 +12,8 @@ class DeviceList extends Component {
   }
 
   componentDidMount() {
-    //https://weather-station-.herokuapp.com/
+
+    // window.fetch('http://localhost:3001/devices').then(data => {
     window.fetch('https://weather-station-.herokuapp.com/devices').then(data => {
       data.json().then(res => {
         this.setState({devices: res})

@@ -36,7 +36,7 @@ class App extends Component {
 
     return (
       <div>
-        <Menu icon inverted>
+        <Menu icon inverted style={ {borderRadius: 0, marginBottom: 0} }>
           <Menu.Item onClick={this.toggleVisibility}>
             <Icon name='content' />
           </Menu.Item>
@@ -47,7 +47,7 @@ class App extends Component {
 
         </Menu>
 
-        <Sidebar.Pushable as={Segment}>
+        <Sidebar.Pushable style={ { marginTop: 0, borderRadius: 0, border: 0} } as={Segment}>
           <Sidebar as={Menu} animation='push' width='thin' visible={visible} icon='labeled' vertical inverted>
             <Menu.Item name='home' href='/'>
               <Icon name='home' />

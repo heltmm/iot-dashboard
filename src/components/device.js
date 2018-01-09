@@ -13,14 +13,15 @@ class Device extends Component {
   }
 
   componentDidMount() {
-    //https://weather-station-.herokuapp.com/
+    // window.fetch(`http://localhost:3001/devices/${this.state.device_id}/readings`).then(data => {
     window.fetch(`https://weather-station-.herokuapp.com/devices/${this.state.device_id}/readings`).then(data => {
       data.json().then(res => {
         this.setState({readings: res})
       })
     })
     console.log(this.state.readings[this.state.readings.length-1])
-    //ws://weather-station-.herokuapp.com/cable
+
+    // const cable = ActionCable.createConsumer('wss://localhost:3001/cable')
     const cable = ActionCable.createConsumer('wss://weather-station-.herokuapp.com/cable')
     this.sub = cable.subscriptions.create({channel: 'ReadingsChannel', device_id: this.state.device_id}, {
       received: this.handleReceiveNewReading

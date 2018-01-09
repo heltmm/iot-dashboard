@@ -31,9 +31,9 @@ let LineGraph = (props) => {
 
     data.datasets[0].data = props.readings.temperatures
     data.labels = props.readings.labels
-    
+
   return (
-    <div>
+    <div style={{width: '50%'}}>
       <Line data={data}/>
     </div>
   );
